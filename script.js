@@ -116,9 +116,8 @@ function createCard(msg) {
 // Render top 3 cards in DOM
 function renderCards() {
     swipeArea.innerHTML = '';
-    const start = Math.max(currentIndex - 1, 0);
-    const end = Math.min(currentIndex + 2, messages.length);
-    for (let i = start; i < end; i++) {
+    // Only render top 3 upcoming cards
+    for (let i = currentIndex; i < currentIndex + 3 && i < messages.length; i++) {
         const card = createCard(messages[i]);
         card.style.zIndex = messages.length - i;
         swipeArea.appendChild(card);
