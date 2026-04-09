@@ -78,9 +78,23 @@ let cardElements = [];
 let dismissedCards = [];
 let cardCount = 0;
 
+// Adjust card container height
 function adjustCardHeight() {
     const vh = window.innerHeight;
     swipeArea.style.height = Math.min(vh * 0.55, 440) + 'px';
+}
+
+// Dynamically shrink text to fit card
+function fitText(card) {
+    const p = card.querySelector('p');
+    let fontSize = parseFloat(window.getComputedStyle(p).fontSize);
+    const maxHeight = card.clientHeight - 80; // padding
+    p.style.fontSize = fontSize + 'px';
+
+    while (p.scrollHeight > maxHeight && fontSize > 12) {
+        fontSize -= 1;
+        p.style.fontSize = fontSize + 'px';
+    }
 }
 
 function createCard(data, index) {
@@ -97,6 +111,8 @@ function createCard(data, index) {
         <p>${data.text}</p>
         <div class="signature">${data.sig}</div>
     `;
+
+    fitText(card);
 
     const hammer = new Hammer(card);
     hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 1 });
@@ -162,6 +178,8 @@ function showPreviousCard() {
     card.style.transform = `translate(0,0) rotate(${initRot}deg)`;
     card.style.opacity = '1';
 
+    fitText(card);
+
     cardCount--;
     updateUI();
 }
@@ -199,7 +217,10 @@ function init() {
     updateUI();
 }
 
-window.addEventListener('resize', adjustCardHeight);
+window.addEventListener('resize', () => {
+    adjustCardHeight();
+    cardElements.forEach(fitText);
+});
 resetBtn.addEventListener('click', init);
 prevBtn.addEventListener('click', showPreviousCard);
 window.onload = init;
