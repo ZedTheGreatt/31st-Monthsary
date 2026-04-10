@@ -68,40 +68,60 @@ const messages = [
     { text: "Happy 31st Monthsary Love! Mahal na mahal kita Love, I love you <3", sig: "✨" }
 ];
 
-const swipeArea = document.getElementById('swipeArea');
-const progress = document.getElementById('progress');
-const resetBtn = document.getElementById('resetBtn');
-const prevBtn = document.getElementById('prevBtn');
-const hint = document.getElementById('hint');
+const swipeArea = document.getElementById("swipeArea");
+const progress = document.getElementById("progress");
+const resetBtn = document.getElementById("resetBtn");
+const prevBtn = document.getElementById("prevBtn");
+const hint = document.getElementById("hint");
+
+const ANIMATION_TIME = 420;
 
 let currentIndex = 0;
 let dismissedStack = [];
 
-// Adjust card height dynamically
+
+/* Adjust height dynamically */
+
 function adjustCardHeight() {
+
     const vh = window.innerHeight;
-    swipeArea.style.height = Math.min(vh * 0.55, 440) + 'px';
+    swipeArea.style.height = Math.min(vh * 0.55, 440) + "px";
+
 }
 
-// Dynamically shrink text to fit card
+
+/* Fit text inside card */
+
 function fitText(card) {
-    const p = card.querySelector('p');
+
+    const p = card.querySelector("p");
+
     let fontSize = parseFloat(window.getComputedStyle(p).fontSize);
-    const maxHeight = card.clientHeight - 80; // padding
-    p.style.fontSize = fontSize + 'px';
+
+    const maxHeight = card.clientHeight - 80;
 
     while (p.scrollHeight > maxHeight && fontSize > 12) {
-        fontSize -= 1;
-        p.style.fontSize = fontSize + 'px';
+
+        fontSize--;
+        p.style.fontSize = fontSize + "px";
+
     }
+
 }
 
-// Create a single card element
+
+/* Create card */
+
 function createCard(msg) {
-    const card = document.createElement('div');
-    card.className = 'card';
+
+    const card = document.createElement("div");
+
+    card.className = "card";
+
     const rotate = (Math.random() - 0.5) * 6;
-    card.setAttribute('data-initial-rotate', rotate);
+
+    card.dataset.initialRotate = rotate;
+
     card.style.transform = `rotate(${rotate}deg)`;
 
     card.innerHTML = `
@@ -109,112 +129,211 @@ function createCard(msg) {
         <p>${msg.text}</p>
         <div class="signature">${msg.sig}</div>
     `;
+
     fitText(card);
+
     return card;
+
 }
 
-// Render top 3 cards in DOM
-function renderCards() {
-    swipeArea.innerHTML = '';
-    // Only render top 3 upcoming cards
+
+/* Render stack */
+
+function renderCards(animateReturn = false) {
+
+    swipeArea.innerHTML = "";
+
     for (let i = currentIndex; i < currentIndex + 3 && i < messages.length; i++) {
+
         const card = createCard(messages[i]);
+
         card.style.zIndex = messages.length - i;
+
+        if (animateReturn && i === currentIndex) {
+
+            card.classList.add("returning");
+
+            setTimeout(() => {
+                card.classList.remove("returning");
+            }, ANIMATION_TIME);
+
+        }
+
         swipeArea.appendChild(card);
+
         attachSwipe(card, i);
+
     }
+
 }
 
-// Attach swipe gestures to a card
+
+/* Swipe behavior */
+
 function attachSwipe(card, index) {
-    let startX = 0, startY = 0, isDragging = false;
 
-    card.addEventListener('pointerdown', e => {
+    let startX = 0;
+    let isDragging = false;
+
+    card.addEventListener("pointerdown", e => {
+
         startX = e.clientX;
-        startY = e.clientY;
+
         isDragging = true;
-        card.style.transition = 'none';
+
+        card.style.transition = "none";
+
         card.setPointerCapture(e.pointerId);
+
     });
 
-    card.addEventListener('pointermove', e => {
+    card.addEventListener("pointermove", e => {
+
         if (!isDragging) return;
+
         const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
+
         const rotate = dx / 15;
-        card.style.transform = `translate(${dx}px, ${dy}px) rotate(${rotate}deg)`;
+
+        card.style.transform = `translate(${dx}px,0) rotate(${rotate}deg)`;
+
     });
 
-    card.addEventListener('pointerup', e => {
+    card.addEventListener("pointerup", e => {
+
         if (!isDragging) return;
+
         isDragging = false;
+
         const dx = e.clientX - startX;
+
         const threshold = swipeArea.offsetWidth * 0.35;
 
         if (Math.abs(dx) > threshold) {
+
             dismissCard(card, dx > 0 ? 1 : -1, index);
+
         } else {
-            const initRot = card.getAttribute('data-initial-rotate');
-            card.style.transition = 'transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275)';
-            card.style.transform = `translate(0,0) rotate(${initRot}deg)`;
+
+            const rot = card.dataset.initialRotate;
+
+            card.style.transition = "";
+
+            card.style.transform = `translate(0,0) rotate(${rot}deg)`;
+
         }
+
     });
+
 }
 
-// Animate card dismissal
+
+/* Dismiss animation */
+
 function dismissCard(card, direction, index) {
-    card.style.transition = 'transform 0.6s ease-in, opacity 0.3s';
-    const screenWidth = window.innerWidth;
-    card.style.transform = `translate(${direction * (screenWidth + 200)}px, 0) rotate(${direction * 45}deg)`;
-    card.style.opacity = '0';
+
+    card.style.transition = "transform 1s ease-in, opacity 1s";
+    
+    card.style.transform =
+        `translate(${direction * (window.innerWidth + 200)}px,0) rotate(${direction * 45}deg)`;
+
+    card.style.opacity = "0";
 
     setTimeout(() => {
+
         dismissedStack.push(index);
+
         currentIndex++;
+
         updateUI();
+
         renderCards();
-    }, 300);
+
+    }, 260);
+
 }
 
-// Show previous card
+
+/* Previous card */
+
 function showPrevious() {
-    if (dismissedStack.length === 0) return;
+
+    if (!dismissedStack.length) return;
+
     currentIndex = dismissedStack.pop();
+
     updateUI();
-    renderCards();
+
+    renderCards(true);
+
 }
 
-// Update progress and hint
+
+/* Reset deck */
+
+function resetDeck() {
+
+    currentIndex = 0;
+
+    dismissedStack = [];
+
+    renderCards(true);
+
+    updateUI();
+
+}
+
+
+/* Update progress */
+
 function updateUI() {
-    const displayIndex = Math.min(currentIndex + 1, messages.length);
-    progress.innerText = `${displayIndex} / ${messages.length}`;
+
+    progress.innerText = `${Math.min(currentIndex + 1, messages.length)} / ${messages.length}`;
 
     prevBtn.disabled = dismissedStack.length === 0;
 
     if (currentIndex >= messages.length) {
+
         hint.innerText = "Yours Truly, Jay❤️";
+
         hint.style.animation = "none";
+
         hint.style.fontSize = "1.2rem";
+
     } else {
+
         hint.innerText = "Swipe left or right";
+
         hint.style.animation = "bounce 2s infinite";
+
         hint.style.fontSize = "0.9rem";
+
     }
+
 }
 
-// Initialize app
+
+/* Init */
+
 function init() {
+
     adjustCardHeight();
-    currentIndex = 0;
-    dismissedStack = [];
-    renderCards();
-    updateUI();
+
+    resetDeck();
+
 }
 
-resetBtn.addEventListener('click', init);
-prevBtn.addEventListener('click', showPrevious);
-window.addEventListener('resize', () => {
+
+resetBtn.addEventListener("click", resetDeck);
+
+prevBtn.addEventListener("click", showPrevious);
+
+window.addEventListener("resize", () => {
+
     adjustCardHeight();
-    document.querySelectorAll('.card').forEach(fitText);
+
+    document.querySelectorAll(".card").forEach(fitText);
+
 });
+
 window.onload = init;
