@@ -40,7 +40,7 @@ const messages = [
     { text: "Yeah we fight a lot, siguro dahil din di tayo magkasama at miss ang isa't isa.", sig: "💖" },
     { text: "Posibleng may problema, gutom o kung anong pinagdadaanan kaya nagagalit.", sig: "💍" },
     { text: "Yeah nagagalit sa isa't isa, pero deep inside mahal padin ang isa't isa.", sig: "💌" },
-    { text: "In 2 years 7 months in a relationship, more than 2 months courtship, and more than 1 month talking stage.", sig: "✨" },
+    { text: "In 2 years 7 months in a relationship, more than 2 months courtship, and more than 1 month talking stage,", sig: "✨" },
     { text: "I like you and I love you from the start <3", sig: "🌷" },
     { text: "Siguro nawala na yung spark at nagiging normal at casual nalang yung mga bagay-bagay,", sig: "💖" },
     { text: "Pero the love is still here, right?", sig: "💍" },
