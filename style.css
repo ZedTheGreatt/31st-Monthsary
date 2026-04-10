@@ -1,519 +1,339 @@
-:root {
+const messages = [
+    { text: "Hi Baby!", sig: "Swipe to see..." },
+    { text: "I just want you to know that,", sig: "✨" },
+    { text: "I'm sorry for everything,", sig: "🌷" },
+    { text: "Sa lahat ng away natin, sa tampuhan,", sig: "💖" },
+    { text: "Sa di pagkakaintindihan, at sa kung ano-ano pang away natin.", sig: "💍" },
+    { text: "I just want you to know that I'm really sorry.", sig: "💌" },
+    { text: "I'm not saying this kasi nauna kang nagsorry,", sig: "✨" },
+    { text: "Kundi dahil ramdam ko yung mga pagkakamali ko sayo.", sig: "🌷" },
+    { text: "Pagkakamali, mga pagkakamali na hindi ko kayang gamutin ng ganun kabilis,", sig: "💖" },
+    { text: "Pero susubukan kong ayusin kahit sa maliliit na bagay.", sig: "💍" },
+    { text: "Sometimes I feel like I'm such a burden to be your boyfriend,", sig: "💌" },
+    { text: "But ayoko din naman na iba yung lalaking nandyan para sayo.", sig: "✨" },
+    { text: "Gusto kitang makitang masaya... Sakin,", sig: "🌷" },
+    { text: "Kasi sa tingin ko diko kakayanin kung sa ibang lalaki ka maging masaya.", sig: "💖" },
+    { text: "I mean, I'm happy when you're happy.", sig: "💍" },
+    { text: "Kung napapasaya ka ng mga kaibigan mo,", sig: "💌" },
+    { text: "Ng pamilya mo, at ng iba.", sig: "✨" },
+    { text: "Siguro sinasabi ko nalang talaga na", sig: "🌷" },
+    { text: "\"Sa ibang lalaki ka mas magiging masaya\"", sig: "💖" },
+    { text: "Kasi nararamdaman kong hindi na kita napapasaya,", sig: "💍" },
+    { text: "Pero deep inside... I want to be the man who makes you smile every single day.", sig: "💌" },
+    { text: "But in reality, I'm also the person who makes you cry and sad...", sig: "✨" },
+    { text: "That's why I'm sorry about everything.", sig: "🌷" },
+    { text: "I'm sorry that I'm like this.", sig: "💖" },
+    { text: "Na ganito akong boyfriend at partner sayo.", sig: "💍" },
+    { text: "I might be the most nonchalant and not showy na taong nakilala mo.", sig: "💌" },
+    { text: "Yes di ako showy pero mahal na mahal kita.", sig: "✨" },
+    { text: "I might be nonchalant all the time,", sig: "🌷" },
+    { text: "But deep inside mahal na mahal kita.", sig: "💖" },
+    { text: "You're the first girl I have ever love.", sig: "💍" },
+    { text: "You're my first love.", sig: "💌" },
+    { text: "You're my first time in almost everything.", sig: "✨" },
+    { text: "Ikaw yung kasama ko sa mga first time ko sa mga bagay-bagay.", sig: "🌷" },
+    { text: "That's why you're so memorable to me.", sig: "💖" },
+    { text: "And I love you ofcourse kaya di kita makakalimutan.", sig: "💍" },
+    { text: "I love your personality, your beauty,", sig: "💌" },
+    { text: "Matalino ka, mabait, mapagmahal.", sig: "✨" },
+    { text: "Yes we're just simple, but the vibe and chemistry that we made is wonderful.", sig: "🌷" },
+    { text: "Yeah we fight a lot, siguro dahil din di tayo magkasama at miss ang isa't isa.", sig: "💖" },
+    { text: "Posibleng may problema, gutom o kung anong pinagdadaanan kaya nagagalit.", sig: "💍" },
+    { text: "Yeah nagagalit sa isa't isa, pero deep inside mahal padin ang isa't isa.", sig: "💌" },
+    { text: "In 2 years 7 months in a relationship, more than 2 months courtship, and more than 1 month talking stage,", sig: "✨" },
+    { text: "I like you and I love you from the start <3", sig: "🌷" },
+    { text: "Siguro nawala na yung spark at nagiging normal at casual nalang yung mga bagay-bagay,", sig: "💖" },
+    { text: "Pero the love is still here, right?", sig: "💍" },
+    { text: "I hope di ka magsawa sakin, asawa ko <3", sig: "💌" },
+    { text: "Ay HHAHAHAHAHAHASANAASAWANAKITAPARAKISSLANGBATINAAGAD", sig: "✨" },
+    { text: "Mwaaaaaaaaaaaaaahhhhhhhhhhh hehe", sig: "🌷" },
+    { text: "Again, I'm really sorry kung lagi nalang tayong ganito.", sig: "💖" },
+    { text: "I'm sorry kung lagi nalang away o misunderstanding pag monthsary, sorry Love.", sig: "💍" },
+    { text: "Ang hirap din pag malayo sa asawa, hindi ma kiss at ma hug kaya nag-aaway eh hehehe.", sig: "💌" },
+    { text: "I hope I make it up to you na makabawi ako sa mga pagkakamali ko sayo,", sig: "✨" },
+    { text: "Na makabawi tayo sa isa't isa.", sig: "🌷" },
+    { text: "And I hope na di ka magsawa at di mo ko iwan :>", sig: "💖" },
+    { text: "I just want to say thank you for everything Love.", sig: "💍" },
+    { text: "I'm so thankful to God kasi pinagtagpo tayo.", sig: "💌" },
+    { text: "We're not perfect, but ang mahalaga sinusubukan natin bumawi.", sig: "✨" },
+    { text: "I'm so thankful kasi sayong klaseng babae ako napunta.", sig: "🌷" },
+    { text: "Maayos ka at di pariwara sa buhay, may pangarap at may puso.", sig: "💖" },
+    { text: "Mahal na mahal kita Love kung sino ka.", sig: "💍" },
+    { text: "I love you <3", sig: "💌" },
+    { text: "Sa totoo lang diko kayang sabihin mga toh sa personal HHAHAHAHAHAHA", sig: "✨" },
+    { text: "Kaya dito ko nalang din sinabi, at sana nasabi ko lahat ng kailangan at gusto kong sabihin sayo Mahal.", sig: "🌷" },
+    { text: "I might be sounded cringe or cheesy, but ito yung nararamdaman ko sayo.", sig: "💖" },
+    { text: "Hindi toh pampagaan ng loob, kundi pag express ko ng pagmamahal ko sayo.", sig: "💍" },
+    { text: "And I hope I expressed my love for you in these letter.", sig: "💌" },
+    { text: "Happy 31st Monthsary Love! Mahal na mahal kita Love, I love you <3", sig: "✨" }
+];
 
-    --bg-color-1: #ffe4e1;
+const swipeArea = document.getElementById("swipeArea");
+const progress = document.getElementById("progress");
+const resetBtn = document.getElementById("resetBtn");
+const prevBtn = document.getElementById("prevBtn");
+const hint = document.getElementById("hint");
 
-    --bg-color-2: #fff0f5;
+const ANIMATION_TIME = 420;
 
-    --card-bg: #ffffff;
+let currentIndex = 0;
+let dismissedStack = [];
 
-    --text-dark: #880e4f;
 
-    --text-light: #d81b60;
+/* Adjust height dynamically */
 
-    --shadow-color: rgba(216, 27, 96, 0.1);
+function adjustCardHeight() {
 
-}
-
-/* Reset */
-
-* {
-
-    box-sizing: border-box;
-
-    margin: 0;
-
-    padding: 0;
-
-    -webkit-tap-highlight-color: transparent;
-
-}
-
-/* Body */
-
-body {
-
-    font-family: 'Quicksand', sans-serif;
-
-    background: linear-gradient(135deg, var(--bg-color-1), var(--bg-color-2));
-
-    min-height: 100vh;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    overflow-x: hidden;
-
-    position: relative;
-
-    padding: 16px;
-
-}
-
-/* Floating Background Decor */
-
-.bg-decor {
-
-    position: absolute;
-
-    font-size: 20px;
-
-    opacity: 0.3;
-
-    animation: float 8s infinite ease-in-out alternate;
-
-    z-index: 0;
-
-    pointer-events: none;
-
-    will-change: transform;
-
-}
-
-.decor-1 { top: 5%; left: 5%; animation-delay: 0s; font-size: 28px; }
-
-.decor-2 { top: 15%; right: 8%; animation-delay: 2s; font-size: 36px; }
-
-.decor-3 { bottom: 10%; left: 12%; animation-delay: 4s; font-size: 32px; }
-
-.decor-4 { bottom: 12%; right: 10%; animation-delay: 1s; font-size: 24px; }
-
-@keyframes float {
-
-    0% { transform: translate(0,0) rotate(0deg); }
-
-    100% { transform: translate(15px,-25px) rotate(15deg); }
-
-}
-
-/* Header */
-
-.header {
-
-    text-align: center;
-
-    margin-bottom: 24px;
-
-    z-index: 10;
+    const vh = window.innerHeight;
+    swipeArea.style.height = Math.min(vh * 0.55, 440) + "px";
 
 }
 
-.header h1 {
 
-    font-family: 'Dancing Script', cursive;
+/* Fit text inside card */
 
-    color: var(--text-dark);
+function fitText(card) {
 
-    font-size: clamp(2rem, 5vw, 3rem);
+    const p = card.querySelector("p");
 
-    text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+    let fontSize = parseFloat(window.getComputedStyle(p).fontSize);
 
-}
+    const maxHeight = card.clientHeight - 80;
 
-/* Card Container */
+    while (p.scrollHeight > maxHeight && fontSize > 12) {
 
-.swipe-area {
-
-    position: relative;
-
-    width: 75%;
-
-    max-width: 360px;
-
-    height: 60vh;
-
-    max-height: 520px;
-
-    perspective: 1000px;
-
-    z-index: 5;
-
-}
-
-/* Individual Card */
-
-.card {
-
-    position: absolute;
-
-    width: 100%;
-
-    height: 100%;
-
-    background: var(--card-bg);
-
-    border-radius: 26px;
-
-    padding: 32px 24px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    align-items: center;
-
-    text-align: center;
-
-    box-shadow: 0 12px 28px var(--shadow-color);
-
-    border: 2px solid #fff;
-
-    cursor: grab;
-
-    transition:
-
-        transform .35s cubic-bezier(.22,.9,.28,1),
-
-        opacity .25s ease;
-
-    user-select: none;
-
-    touch-action: none;
-
-    will-change: transform, opacity;
-
-    transform: translateZ(0);
-
-    backface-visibility: hidden;
-
-}
-
-/* Active grab */
-
-.card:active {
-
-    cursor: grabbing;
-
-}
-
-/* Ribbon icon */
-
-.card::before {
-
-    content: "🎀";
-
-    position: absolute;
-
-    top: -16px;
-
-    font-size: 32px;
-
-}
-
-/* Inner dashed border */
-
-.card-inner-border {
-
-    position: absolute;
-
-    inset: 12px;
-
-    border: 1.5px dashed rgba(216,27,96,0.15);
-
-    border-radius: 20px;
-
-    pointer-events: none;
-
-}
-
-/* Card return-from-top animation */
-
-.card.returning {
-
-    animation: returnFromTop 1s cubic-bezier(.25,1,.3,1) forwards;
-
-}
-
-@keyframes returnFromTop {
-
-    0% {
-
-        transform: translateY(-120px) scale(.96) rotate(-1deg);
-
-        opacity: .85;
-
-    }
-
-    60% {
-
-        transform: translateY(10px) scale(1.01);
-
-        opacity: 1;
-
-    }
-
-    100% {
-
-        transform: translateY(0) scale(1) rotate(0deg);
-
-        opacity: 1;
+        fontSize--;
+        p.style.fontSize = fontSize + "px";
 
     }
 
 }
 
-/* Reset stack animation */
 
-.card.resetting {
+/* Create card */
 
-    animation: resetStack 1s cubic-bezier(.25,1,.3,1);
+function createCard(msg) {
 
-}
+    const card = document.createElement("div");
 
-@keyframes resetStack {
+    card.className = "card";
 
-    0% {
+    const rotate = (Math.random() - 0.5) * 6;
 
-        transform: translateY(-140px) scale(.94);
+    card.dataset.initialRotate = rotate;
 
-        opacity: .7;
+    card.style.transform = `rotate(${rotate}deg)`;
 
-    }
+    card.innerHTML = `
+        <div class="card-inner-border"></div>
+        <p>${msg.text}</p>
+        <div class="signature">${msg.sig}</div>
+    `;
 
-    100% {
+    fitText(card);
 
-        transform: translateY(0) scale(1);
-
-        opacity: 1;
-
-    }
-
-}
-
-/* Card Text */
-
-.card p {
-
-    color: var(--text-dark);
-
-    font-size: clamp(1.1rem, 3.8vw, 1.45rem);
-
-    line-height: 1.5;
-
-    font-weight: 500;
-
-    margin-bottom: 18px;
-
-    word-break: break-word;
+    return card;
 
 }
 
-.card .signature {
 
-    font-family: 'Dancing Script', cursive;
+/* Render stack */
 
-    color: var(--text-light);
+function renderCards(animateReturn = false) {
 
-    font-size: clamp(1.6rem, 5vw, 2.2rem);
+    swipeArea.innerHTML = "";
 
-    margin-top: 10px;
+    for (let i = currentIndex; i < currentIndex + 3 && i < messages.length; i++) {
 
-}
+        const card = createCard(messages[i]);
 
-/* Swipe Hint */
+        card.style.zIndex = messages.length - i;
 
-.swipe-hint {
+        if (animateReturn && i === currentIndex) {
 
-    position: absolute;
+            card.classList.add("returning");
 
-    bottom: -42px;
+            setTimeout(() => {
+                card.classList.remove("returning");
+            }, ANIMATION_TIME);
 
-    width: 100%;
+        }
 
-    text-align: center;
+        swipeArea.appendChild(card);
 
-    font-size: .9rem;
-
-    color: var(--text-light);
-
-    font-weight: 600;
-
-    letter-spacing: 1px;
-
-    text-transform: uppercase;
-
-    animation: bounce 2s infinite;
-
-    opacity: .85;
-
-}
-
-@keyframes bounce {
-
-    0%,20%,50%,80%,100% {
-
-        transform: translateY(0);
-
-    }
-
-    40% {
-
-        transform: translateY(-6px);
-
-    }
-
-    60% {
-
-        transform: translateY(-3px);
+        attachSwipe(card, i);
 
     }
 
 }
 
-/* Controls */
 
-.controls {
+/* Swipe behavior */
 
-    margin-top: 44px;
+function attachSwipe(card, index) {
 
-    display: flex;
+    let startX = 0;
+    let isDragging = false;
 
-    align-items: center;
+    card.addEventListener("pointerdown", e => {
 
-    justify-content: center;
+        startX = e.clientX;
 
-    gap: 14px;
+        isDragging = true;
 
-    flex-wrap: wrap;
+        card.style.transition = "none";
 
-    z-index: 10;
+        card.setPointerCapture(e.pointerId);
 
-}
+    });
 
-.btn-circle {
+    card.addEventListener("pointermove", e => {
 
-    width: 46px;
+        if (!isDragging) return;
 
-    height: 46px;
+        const dx = e.clientX - startX;
 
-    border-radius: 50%;
+        const rotate = dx / 15;
 
-    border: none;
+        card.style.transform = `translate(${dx}px,0) rotate(${rotate}deg)`;
 
-    background: #fff;
+    });
 
-    color: var(--text-light);
+    card.addEventListener("pointerup", e => {
 
-    font-size: 1.15rem;
+        if (!isDragging) return;
 
-    display: flex;
+        isDragging = false;
 
-    align-items: center;
+        const dx = e.clientX - startX;
 
-    justify-content: center;
+        const threshold = swipeArea.offsetWidth * 0.35;
 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+        if (Math.abs(dx) > threshold) {
 
-    cursor: pointer;
+            dismissCard(card, dx > 0 ? 1 : -1, index);
 
-    transition: transform .2s ease;
+        } else {
 
-}
+            const rot = card.dataset.initialRotate;
 
-.btn-circle:active {
+            card.style.transition = "";
 
-    transform: scale(.9);
+            card.style.transform = `translate(0,0) rotate(${rot}deg)`;
 
-}
+        }
 
-.btn-circle:disabled {
-
-    opacity: .3;
-
-    cursor: not-allowed;
-
-    box-shadow: none;
+    });
 
 }
 
-/* Progress */
 
-.progress-bar {
+/* Dismiss animation */
 
-    background: rgba(255,255,255,.5);
+function dismissCard(card, direction, index) {
 
-    padding: 6px 14px;
+    card.style.transition = "transform 1s ease-in, opacity 1s";
+    
+    card.style.transform =
+        `translate(${direction * (window.innerWidth + 200)}px,0) rotate(${direction * 45}deg)`;
 
-    border-radius: 18px;
+    card.style.opacity = "0";
 
-    font-size: .85rem;
+    setTimeout(() => {
 
-    color: var(--text-dark);
+        dismissedStack.push(index);
 
-    font-weight: 600;
+        currentIndex++;
 
-    min-width: 55px;
+        updateUI();
 
-    text-align: center;
+        renderCards();
+
+    }, 260);
 
 }
 
-/* Tablet */
 
-@media (min-width: 768px) {
+/* Previous card */
 
-    .swipe-area {
+function showPrevious() {
 
-        max-width: 520px;
+    if (!dismissedStack.length) return;
 
-        height: 62vh;
+    currentIndex = dismissedStack.pop();
+
+    updateUI();
+
+    renderCards(true);
+
+}
+
+
+/* Reset deck */
+
+function resetDeck() {
+
+    currentIndex = 0;
+
+    dismissedStack = [];
+
+    renderCards(true);
+
+    updateUI();
+
+}
+
+
+/* Update progress */
+
+function updateUI() {
+
+    progress.innerText = `${Math.min(currentIndex + 1, messages.length)} / ${messages.length}`;
+
+    prevBtn.disabled = dismissedStack.length === 0;
+
+    if (currentIndex >= messages.length) {
+
+        hint.innerText = "Yours Truly, Jay❤️";
+
+        hint.style.animation = "none";
+
+        hint.style.fontSize = "1.2rem";
+
+    } else {
+
+        hint.innerText = "Swipe left or right";
+
+        hint.style.animation = "bounce 2s infinite";
+
+        hint.style.fontSize = "0.9rem";
 
     }
 
 }
 
-/* Laptop */
 
-@media (min-width: 1200px) {
+/* Init */
 
-    .swipe-area {
+function init() {
 
-        max-width: 640px;
+    adjustCardHeight();
 
-        height: 65vh;
-
-    }
+    resetDeck();
 
 }
 
-/* Small phones */
 
-@media (max-width: 400px) {
+resetBtn.addEventListener("click", resetDeck);
 
-    .card {
+prevBtn.addEventListener("click", showPrevious);
 
-        padding: 26px 16px;
+window.addEventListener("resize", () => {
 
-    }
+    adjustCardHeight();
 
-    .card p {
+    document.querySelectorAll(".card").forEach(fitText);
 
-        font-size: clamp(.95rem,3.4vw,1.2rem);
+});
 
-    }
-
-    .card .signature {
-
-        font-size: clamp(1.3rem,4.2vw,1.7rem);
-
-    }
-
-    .swipe-hint {
-
-        font-size: .8rem;
-
-        bottom: -36px;
-
-    }
-
-<<<<<<< HEAD
-}
-=======
-}
->>>>>>> 1d0aedc (Initial commit)
+window.onload = init;
